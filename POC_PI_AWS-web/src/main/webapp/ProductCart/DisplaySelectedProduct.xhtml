@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/Template/Template.xhtml" xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="page_name" value="Details" />
+
+	<ui:define name="body">
+
+		<h4>Product</h4>
+		<h:form>
+
+			<div class="row">
+				<div class="col-lg-6">
+
+					<div class="product-pic-zoom">
+						<c:if test="#{ productCartBean.TestImage1(productCartBean.imageString)}">
+							<h:commandButton
+								image="data:image/jpg;base64,#{productCartBean.imageString} "
+								styleClass="button" value="add to cart">
+							</h:commandButton>
+						</c:if>
+						<c:if
+							test="#{not productCartBean.TestImage1(productCartBean.imageString)}">
+							<h:graphicImage
+								value="../Ressources/Uploads/#{productCartBean.imageString}" />
+
+						</c:if>
+
+						<div class="zoom-icon">
+							<i class="fa fa-search-plus"></i>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="product-details">
+						<div class="pd-title">
+							<span>oranges</span>
+							<h3>
+								<h:outputText value="#{productCartBean.nom}" />
+							</h3>
+							<a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
+						</div>
+						<div class="pd-rating">
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+								class="fa fa-star"></i> <i class="fa fa-star"></i> <i
+								class="fa fa-star-o"></i> <span>(5)</span>
+						</div>
+						<div class="pd-desc">
+							<p>
+								<h:outputText value="#{productCartBean.description}" />
+							</p>
+							<h4>
+								<h:outputText value="#{productCartBean.prix}" />
+							</h4>
+						</div>
+
+
+						<h:inputText value="#{productCartBean.quantite}"
+							pt:placeholder="Quantity" styleClass="form-control" id="quantity"
+							required="true" requiredMessage="required" />
+						<h:message for="quantity"></h:message>
+						<h:commandButton action="#{productCartBean.AddToCart}"
+							value="Add to my cart" styleClass="btn btn-primary pull-center"
+							id="hsine" />
+					</div>
+					<ul class="pd-tags">
+						<li><span>CATEGORY</span>: <h:outputText
+								value="#{productCartBean.category}" /></li>
+					</ul>
+
+				</div>
+			</div>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

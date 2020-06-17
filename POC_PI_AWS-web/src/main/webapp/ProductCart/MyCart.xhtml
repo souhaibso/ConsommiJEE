@@ -1,0 +1,105 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/Template/Template.xhtml" xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="page_name" value="My Cart" />
+
+	<ui:define name="body">
+		<section class="shopping-cart spad">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="cart-table">
+							<table>
+								<thead>
+									<tr>
+										<th>Image</th>
+										<th class="p-name">Product Name</th>
+										<th>Price</th>
+										<th>Quantity</th>
+										<th>Total</th>
+										<th><i class="ti-close"></i></th>
+										<th>Update Quantity</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="c" items="#{productCartBean.cartlines}"
+										varStatus="status">
+										<tr>
+											<c:if test="#{not productCartBean.TestImage(c.myProduct)}">
+												<td class="cart-pic first-row"><h:graphicImage
+														value="../Ressources/Uploads/#{c.myProduct.imageString}" />
+												</td>
+											</c:if>
+											<c:if test="#{ productCartBean.TestImage(c.myProduct)}">
+												<td class="cart-pic first-row"><h:commandButton
+														image="data:image/jpg;base64,#{c.myProduct.imageString}"
+														styleClass="button" value="add to cart">
+													</h:commandButton></td>
+
+											</c:if>
+											<td class="cart-title first-row">
+												<h5>
+													<h:outputText value="#{c.nomProd}" />
+												</h5>
+											</td>
+											<td class="p-price first-row"><h:outputText
+													value="#{c.prixunitaire}" /> $</td>
+											<td class="qua-col first-row">
+												<div class="quantity">
+													<h:outputText value="#{c.quantiteChoisie}" />
+												</div>
+											</td>
+											<td class="total-price first-row"><h:outputText
+													value="#{c.prixTotal}" />$</td>
+											<td class="close-td first-row"><h:form>
+													<h:commandLink action="#{productCartBean.Remove(c)}">
+														<i class="ti-close"> </i>
+													</h:commandLink>
+												</h:form></td>
+											<td class="close-td first-row"><h:form>
+													<h:commandLink action="#{productCartBean.UpdateQuan(c)}">
+														<i class="ti-apple"> </i>
+													</h:commandLink>
+												</h:form></td>
+
+										</tr>
+									</c:forEach>
+
+
+								</tbody>
+							</table>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="cart-buttons">
+									<a href="/POC_PI_AWS-web/ProductCart/Index.jsf"
+										class="primary-btn continue-shop">Continue shopping</a>
+								</div>
+
+							</div>
+							<div class="col-lg-4 offset-lg-4">
+								<div class="proceed-checkout">
+									<h:form>
+
+										<h:commandLink action="#{productCartBean.Confirm}"
+											value="Confirm
+										Purchase" styleClass="proceed-btn" />
+									</h:form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</ui:define>
+</ui:composition>

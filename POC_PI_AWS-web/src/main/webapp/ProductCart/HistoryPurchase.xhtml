@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/Template/Template.xhtml" xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="page_name" value="History Purchase" />
+
+	<ui:define name="body">
+
+		<h2>Cart History</h2>
+
+		<div class="login-form-grids animated wow slideInUp"
+			data-wow-delay=".5s">
+			<h:form>
+				<h:inputText pt:placeholder="product name"
+					value="#{productCartBean.keyword}"></h:inputText>
+				<div class="row">
+					<div class="col-lg-6">
+						<h:inputText value="#{productCartBean.prix1}"
+							pt:placeholder="minimum price">
+						</h:inputText>
+					</div>
+					<div class="col-lg-6">
+						<h:inputText value="#{productCartBean.prix2}"
+							pt:placeholder="maximum price">
+
+						</h:inputText>
+
+					</div>
+				</div>
+
+
+
+				<h:commandButton class="btn btn-default btn-purple" value="Search"
+					action="#{productCartBean.Search()}"></h:commandButton>
+			</h:form>
+		</div>
+		<br />
+		<c:forEach var="cart" items="#{productCartBean.getSearch()}"
+			varStatus="status">
+			<h3>
+				you have confirmed payment for this Cart on <span
+					style="color: #3399CC"> <h:outputText
+						style="font-weight:bold" value="#{cart.dateAchat}">
+						<f:convertDateTime locale="en" timeStyle="short" type="both"
+							dateStyle="full" />
+					</h:outputText>
+
+				</span> which contains the products below and you paid <span
+					style="color: #3399CC"><h:outputText
+						style="font-weight:bold" value="#{cart.prixTotal}" /> € </span>
+			</h3>
+
+			<section class="shopping-cart spad">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="cart-table">
+								<table>
+									<thead>
+										<tr>
+											<th>Image</th>
+											<th class="p-name">Product Name</th>
+											<th>Price</th>
+											<th>Quantity</th>
+											<th>Total</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="cartline" items="#{cart.cartLines}"
+											varStatus="status">
+											<tr>
+											<c:if test="#{ productCartBean.TestImage(cartline.myProduct)}">
+
+												<td class="cart-pic first-row"><img class="center"
+													widht="170" height="170"
+													src="data:image/jpg;base64,#{cartline.myProduct.imageString}" /></td>
+												</c:if>	
+												<c:if test="#{not productCartBean.TestImage(cartline.myProduct)}">
+
+												<td class="cart-pic first-row"><h:graphicImage
+														value="../Ressources/Uploads/#{cartline.myProduct.imageString}" /></td>
+												</c:if>	
+												<td class="cart-title first-row">
+													<h5>
+														<h:outputText value="#{cartline.myProduct.nom}" />
+													</h5>
+												</td>
+												<td class="p-price first-row"><h:outputText
+														value="#{cartline.myProduct.prix}" />$</td>
+												<td class="qua-col first-row">
+													<div class="quantity">
+														<h:outputText value="#{cartline.quantiteChoisie}" />
+													</div>
+												</td>
+												<td class="total-price first-row"><h:outputText
+														value="#{cartline.prixTotal}" />$</td>
+
+											</tr>
+											</c:forEach>
+									</tbody>
+								</table>
+								                            <div align="right">Total= #{cart.prixTotal} € </div>
+								
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+		</c:forEach>
+
+	</ui:define>
+</ui:composition>
